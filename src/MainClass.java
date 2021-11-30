@@ -30,7 +30,7 @@ public class MainClass {
                     + "\n(3) Exit the System");
             switch (new Scanner(System.in).nextInt()) {
             case 1: encrypt();				break;
-            case 2: Decrypt();				break;
+            case 2: decrypt();				break;
             case 3: System.exit(0);
             }
         }
@@ -50,8 +50,8 @@ public class MainClass {
 	//	Scanner read;
 	//	try {read = new Scanner(new File("message.txt"));}
 	//	catch (FileNotFoundException e) {System.out.println("File is missing"); return;}
-		long e = 13; //read.nextLong(); 	TODO Throw an exception if e or n is wrong
-		long n = 2537; //read.nextLong();  TODO Need to check which value comes first in the message.txt
+		long e = 5; //read.nextLong(); 	TODO Throw an exception if e or n is wrong
+		long n = 17*7; //read.nextLong();  TODO Need to check which value comes first in the message.txt
 		Integer blockLength = 0;
 		while (n > blockLength) {
 			int power = 0;
@@ -59,7 +59,7 @@ public class MainClass {
 			power += 2;
 		}
 		blockLength = blockLength.toString().length()/2;
-		String Emessage = "STOP";
+		String Emessage = "ST";
 		String dmessage = "";
 		String temp = "";
 	//	while (read.hasNextLine()) message += read.nextLine();
@@ -77,7 +77,7 @@ public class MainClass {
 		System.out.println(dmessage);
 	}
 
-	private static void Decrypt() {
+	private static void decrypt() {
 		
 	}
 }
