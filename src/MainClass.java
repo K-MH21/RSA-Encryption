@@ -7,18 +7,16 @@ import java.util.Scanner;
 public class MainClass {
 
     final static ArrayList<String> Alphabet_Values = new ArrayList<>();
-    static String dmessage="";
-    static String emessage="";
     static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.?!,;:-()[]{}'\" \n";
     static Scanner kb = new Scanner(System.in);
     
     public static void main(String[] args) throws IOException {
         //Preparing Alphabet_Values and alphabet
-            for (Integer i = 0; i < alphabet.length(); i++) 
-                if (i < 10)	Alphabet_Values.add("0" + i.toString());
-                else		Alphabet_Values.add(i.toString());
-            
-            //Main menu
+		for (Integer i = 0; i < alphabet.length(); i++)
+			if (i < 10)	Alphabet_Values.add("0" + i.toString());
+			else		Alphabet_Values.add(i.toString());
+
+        //Main menu
         while (true) {
             System.out.println("What do you want to do?"
                     + "\n(1) Encrypt a message"
@@ -38,6 +36,17 @@ public class MainClass {
     private static long MOD(long a, long m) {
         if (!(m > 0)) throw new InputMismatchException("Wrong m value");
         return ((a % m) + m) % m;
+    }
+    
+    
+	private static long MODEXP(long a, long b, long m) {
+		if (b > 10)	return MOD((long) Math.pow(a, 10), m) * MODEXP(a, b - 10, m);
+		return MOD((long) Math.pow(a, b), m);
+	}
+    
+    private static long MODEXPBase(long a, long b, long m) {
+    	if (a > m/2) a -= m;
+    	return MOD(MODEXP(a, b, m), m);
     }
 
     /*
@@ -62,6 +71,9 @@ public class MainClass {
             blockLength += (int) ((alphabet.length() - 1) * Math.pow(10, power));
         blockLength = blockLength.toString().length()/2;
         
+        //Making sure that every block is equal to each other.
+        while (dmessage.length() % blockLength != 0) dmessage += "X";
+        
         //Encrypting the message
         String emessage = "";
 		{
@@ -73,7 +85,7 @@ public class MainClass {
 				temp += Alphabet_Values.get(s);
 				if (j == blockLength) {
 					j = 0;
-					emessage += MOD((long) Math.pow(Long.valueOf(temp), e), n);
+					emessage += MODEXPBase(Long.valueOf(temp), e, n);
 					temp = "";
 				}
 			}
@@ -100,7 +112,7 @@ public class MainClass {
         Scanner scanner = new Scanner(file);
         String encrypted = scanner.next();
 
-      
+        String dmessage = "";
 
 
         for (int j = 0 ; j < encrypted.length(); j += 2) {
