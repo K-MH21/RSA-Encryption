@@ -62,7 +62,7 @@ public class MainClass {
         //Getting the values
         String dmessage = "";
         long e = read.nextLong();
-        long n = read.nextLong();  //TODO Need to check which value comes first in the message.txt
+        long n = read.nextLong();
         read.nextLine();
     	while (read.hasNextLine()) dmessage += read.nextLine() + "\n";
     	dmessage = dmessage.substring(0, dmessage.length() - 1);
@@ -102,27 +102,6 @@ public class MainClass {
         System.out.println("The message has been encrypted successfully");
     }
 
-    private static void deccrypt() {
-    	System.out.print("Enter d's value: ");
-        long d = kb.nextLong();
-        System.out.print("Enter n's value: ");
-        long n = kb.nextLong();
-        String dmessage="";
-
-        Scanner scanner;
-        try {scanner = new Scanner(new File("message.rsa"));}
-        catch (FileNotFoundException e) {System.out.println("File is missing"); return;}
-        
-        String dnumbers = "";
-        while (scanner.hasNext()) {
-        	dnumbers += MODEXPBase(scanner.nextLong(), d, n);
-        }
-        dnumbers = dnumbers.substring(0, dnumbers.length() - 1);
-        for (; dnumbers != ""; dnumbers = dnumbers.substring(2, dnumbers.length())) {
-        	dmessage += alphabet.charAt(Integer.parseInt(dnumbers.substring(0, 2)) % alphabet.length());
-        	}
-        System.out.println(dmessage);
-    }
     private static void decrypt() throws IOException {
 
 
