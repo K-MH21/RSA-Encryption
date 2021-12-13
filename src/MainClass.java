@@ -109,52 +109,59 @@ public class MainClass {
         long d = kb.nextLong();
         System.out.print("Enter n's value: ");
         long n = kb.nextLong();
-        String dmessage="";
-
+        String dmessage = "";
+        
         Scanner scanner;
-        try {scanner = new Scanner(new File("message.rsa"));}
-        catch (FileNotFoundException e) {System.out.println("File is missing"); return;}
+        try {
+            scanner = new Scanner(new File("t22.rsa"));
+        } catch (FileNotFoundException e) {
+            System.out.println("File is missing");
+            return;
+        }
 
         String encrypted = "";
+        int blockLength;
+        {
+        BigInteger block = BigInteger.valueOf(alphabet.length() - 1);
+        for(int power = 2; BigInteger.valueOf(n).compareTo(block) == 1; power += 2) 
+        	block = block.add(BigInteger.valueOf((long) ((alphabet.length() - 1)*Math.pow(10, power))));
+        blockLength = String.valueOf(block).length() - 2;
+        }
 
- //TODO read character by character
-        while (scanner.hasNext()){
-            encrypted = scanner.next();
-            long temp ;
-            long character = temp = Long.valueOf(encrypted);
+        //TODO read character by character
+        while (scanner.hasNextLine())
+            encrypted += scanner.nextLine();
 
 
 
-            for (int i = 1; i < d; i++) {    //TODO calculate mod for large numbers
-                if (temp > n)
-                    temp = temp % n;
+            for (int j = 0; j < encrypted.length(); j += blockLength) {
+                BigInteger temp = BigInteger.valueOf(Long.parseLong(encrypted.substring(j, j + blockLength)));
+                BigInteger character;
 
-                temp = temp * character;
+                character = temp.modPow(BigInteger.valueOf(d), BigInteger.valueOf(n));
+
+            if (character.toString().length() < blockLength)
+                dmessage += "0".repeat(blockLength - character.toString().length()) + character;
+
+        else
+                dmessage += String.valueOf(character);
+
+
             }
 
-            if (temp > n)
-                temp = temp % n;
 
+            String Dmessage = "";
+            for (int i = 0; i < dmessage.length(); i = i + 2) {
+                Dmessage += (alphabet.charAt(Integer.parseInt(dmessage.substring(i, i + 2)))); // TODO get the alphabet by using the index from the alphabet string
+            }
+            System.out.println(Dmessage);
+            System.out.println("Your encrypted file has been crated.");
 
-            if (temp < 10)
-                dmessage += "0" + temp;   //TODO add 0 to the left of any char has index less than 10 to read it correctly from the alphabet String
+            dmessage = "";
 
-            else
-                dmessage += String.valueOf(temp);
-
-
+            FileWriter fileWriter = new FileWriter("t1new.dec");
+            fileWriter.write(Dmessage);
+            fileWriter.close();
+            scanner.close();
         }
-        
-        String Dmessage = "";
-        for (int i = 0; i < dmessage.length(); i = i+2) {
-            Dmessage += (alphabet.charAt(Integer.parseInt(dmessage.substring(i,i+2)))); // TODO get the alphabet by using the index from the alphabet string
-        }
-        System.out.println("Your encrypted file has been crated.");
-        dmessage = "";
-
-        FileWriter fileWriter = new FileWriter("message.dec");
-        fileWriter.write(Dmessage);
-        fileWriter.close();
-        scanner.close();
-    }
 }
