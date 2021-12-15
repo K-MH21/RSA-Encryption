@@ -6,17 +6,17 @@ To use it, please follow these next steps.
 
 ### -Encryption
 ```
-    1- Go to line **59** and write the directory of the message file.
+    1- Go to line **41** and write the directory of the message file.
   
     2- in the message file, put the encryption key (**e**) first, then the public key (**n**) second, followed by the message starting in the next line
   
-    3- Go to line **97**, and write the directory and name of the output, the encrypted file, followed by .rsa to be able to have it in rsa format
+    3- Go to line **83**, and write the directory and name of the output, the encrypted file, followed by .rsa to be able to have it in rsa format
   
     4- Compile the code and choose the first option (**1**)
 ```
 ### -Decryption
 ```
-  1- Go to line **115**, and write the directory and the name of the encrypted file.
+  1- Go to line **102**, and write the directory and the name of the encrypted file.
   
   2- Compile the code and choose the second option (**2**) and follow the program instructions.
   
