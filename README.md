@@ -1,6 +1,6 @@
 
-### RSA-Encryption
-# ICS 254 Project
+### ICS 254 Project
+# RSA-Encryption
 
 This code has been written on Java, using only one class and no external libraries.
 To use it, please follow these next steps.
