@@ -10,12 +10,12 @@ public class MainClass {
     static Scanner kb = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-        //Preparing Alphabet_Values and alphabet
+        // Preparing Alphabet_Values and alphabet
         for (Integer i = 0; i < alphabet.length(); i++)
             if (i < 10)	Alphabet_Values.add("0" + i.toString());
             else		Alphabet_Values.add(i.toString());
 
-        //Main menu
+        // Main menu
         while (true) {
             System.out.println("What do you want to do?"
                     + "\n(1) Encrypt a message"
@@ -36,10 +36,10 @@ public class MainClass {
      * and will produce an .rsa file as an output.
      */
     private static void encrypt() throws IOException {
-        //Getting the message
+        // Getting the message
         Scanner read;
         try {read = new Scanner(new File("message.txt"));}
-        catch (FileNotFoundException e) {System.out.println("File is missing"); return;}
+        catch (FileNotFoundException e) {System.out.println("ERROR: File is missing"); return;}
 
         //Getting the values
         String dmessage = "";
@@ -49,19 +49,17 @@ public class MainClass {
         while (read.hasNextLine()) dmessage += read.nextLine() + "\n";
         dmessage = dmessage.substring(0, dmessage.length() - 1);
 
-        //Finding the blockLength
+        // Finding the blockLength
         int blockLength;
+		BigInteger block = BigInteger.valueOf(alphabet.length() - 1);
+		for (int power = 2; BigInteger.valueOf(n).compareTo(block) == 1; power += 2)
+			block = block.add(BigInteger.valueOf((long) ((alphabet.length() - 1) * Math.pow(10, power))));
+		blockLength = (String.valueOf(block).length() - 2) / 2;
 
-            BigInteger block = BigInteger.valueOf(alphabet.length() - 1);
-            for(int power = 2; BigInteger.valueOf(n).compareTo(block) == 1; power += 2)
-                block = block.add(BigInteger.valueOf((long) ((alphabet.length() - 1)*Math.pow(10, power))));
-            blockLength = (String.valueOf(block).length() - 2)/2;
-
-
-        //Making sure that every block is equal to each other.
+        // Making sure that every block are equal in length.
         while (dmessage.length() % blockLength != 0) dmessage += "X";
 
-        //Encrypting the message
+        // Encrypting the message
         String emessage = "";
 
             String temp;
@@ -79,75 +77,72 @@ public class MainClass {
                 }
             }
 
-        //Creating the rsa file and writing on it
+        // Creating the rsa file and writing on it
         FileWriter fileWriter = new FileWriter("message.rsa");
         fileWriter.write(emessage);
         fileWriter.close();
 
-        //End of the method
+        // End of the method
         System.out.println("The message has been encrypted successfully");
     }
 
-    private static void decrypt() throws IOException {
+	private static void decrypt() throws IOException {
 
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new File("message.rsa"));
+		} catch (FileNotFoundException e) {
+			System.out.println("File is missing");
+			return;
+		}
 
-        System.out.print("Enter d's value: ");
-        long d = kb.nextLong();
-        System.out.print("Enter n's value: ");
-        long n = kb.nextLong();
-        String dmessage = "";
+		System.out.print("Enter d's value: ");
+		long d = kb.nextLong();
+		System.out.print("Enter n's value: ");
+		long n = kb.nextLong();
+		String dmessage = "";
 
-        Scanner scanner;
-        try {
-            scanner = new Scanner(new File("message.rsa"));
-        } catch (FileNotFoundException e) {
-            System.out.println("File is missing");
-            return;
-        }
+		String encrypted = "";
+		int blockLength;
+		{
+			BigInteger block = BigInteger.valueOf(alphabet.length() - 1);
+			for (int power = 2; BigInteger.valueOf(n).compareTo(block) == 1; power += 2)
+				block = block.add(BigInteger.valueOf((long) ((alphabet.length() - 1) * Math.pow(10, power))));
+			blockLength = String.valueOf(block).length() - 2;
+		}
 
-        String encrypted = "";
-        int blockLength;
-        {
-            BigInteger block = BigInteger.valueOf(alphabet.length() - 1);
-            for(int power = 2; BigInteger.valueOf(n).compareTo(block) == 1; power += 2)
-                block = block.add(BigInteger.valueOf((long) ((alphabet.length() - 1)*Math.pow(10, power))));
-            blockLength = String.valueOf(block).length() - 2;
-        }
+		// read character by character
+		while (scanner.hasNextLine())
+			encrypted += scanner.nextLine();
 
-        //TODO read character by character
-        while (scanner.hasNextLine())
-            encrypted += scanner.nextLine();
+		for (int j = 0; j < encrypted.length(); j += blockLength) {
+			BigInteger temp = BigInteger.valueOf(Long.parseLong(encrypted.substring(j, j + blockLength)));
+			BigInteger character;
 
+			character = temp.modPow(BigInteger.valueOf(d), BigInteger.valueOf(n));
 
+			if (character.toString().length() < blockLength)
+				dmessage += "0".repeat(blockLength - character.toString().length()) + character;
 
-        for (int j = 0; j < encrypted.length(); j += blockLength) {
-            BigInteger temp = BigInteger.valueOf(Long.parseLong(encrypted.substring(j, j + blockLength)));
-            BigInteger character;
+			else
+				dmessage += String.valueOf(character);
 
-            character = temp.modPow(BigInteger.valueOf(d), BigInteger.valueOf(n));
+		}
 
-            if (character.toString().length() < blockLength)
-                dmessage += "0".repeat(blockLength - character.toString().length()) + character;
+		String Dmessage = "";
+		for (int i = 0; i < dmessage.length(); i = i + 2) {
+			Dmessage += (alphabet.charAt(Integer.parseInt(dmessage.substring(i, i + 2)))); // get the alphabet by using
+																							// the index from the
+																							// alphabet string
+		}
+		
+		dmessage = "";
 
-            else
-                dmessage += String.valueOf(character);
+		FileWriter fileWriter = new FileWriter("message.dec");
+		fileWriter.write(Dmessage);
+		fileWriter.close();
+		scanner.close();
 
-
-        }
-
-
-        String Dmessage = "";
-        for (int i = 0; i < dmessage.length(); i = i + 2) {
-            Dmessage += (alphabet.charAt(Integer.parseInt(dmessage.substring(i, i + 2)))); // TODO get the alphabet by using the index from the alphabet string
-        }
-       
-        System.out.println("Your encrypted file has been crated.");
-
-        dmessage = "";
-
-        FileWriter fileWriter = new FileWriter("message.dec");
-        fileWriter.write(Dmessage);
-        fileWriter.close();
-        scanner.close();
-    }
+		System.out.println("Your encrypted file has been crated.");
+	}
 }

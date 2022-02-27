@@ -1,30 +1,32 @@
+
 ### RSA-Encryption
-## ICS 254 Project
+# ICS 254 Project
 
 This code has been written on Java, using only one class and no external libraries.
 To use it, please follow these next steps.
 
-### -Encryption
-```
-    1- Go to line **41** and write the directory of the message file.
-  
-    2- in the message file, put the encryption key (**e**) first, then the public key (**n**) second, followed by the message starting in the next line
-  
-    3- Go to line **83**, and write the directory and name of the output, the encrypted file, followed by .rsa to be able to have it in rsa format
-  
-    4- Compile the code and choose the first option (**1**)
-```
-### -Decryption
-```
-  1- Go to line **102**, and write the directory and the name of the encrypted file.
-  
-  2- Compile the code and choose the second option (**2**) and follow the program instructions.
-  
-  3- Enter the value of the private key (**d**).
-  
-  4- Enter the value of **n**
-  
-  5- decrypted file will be created in the same project's directory.
-  
-  6- prompt a message to tell the user that the decrypted file has been crated.
-```
+## Encryption
+#### Pre-conditions
+ - You should have a valid text file with a proper encryption key, public key, and a proper text to encrypt.
+--  The accepted text language is any character of this string.
+
+ - In the message file, you need to write the encryption key (**e**) first, then the public key (**n**) second, followed by the message starting in the **next line**.
+ - Your message file should be named message.txt and be placed in the working folder.
+-- You could change this behavior in the code, go to line **41** and write the file path that you want.
+#### Post-condition
+ - The output file will be a text file named message.rsa placed in the working folder.
+-- You could change this behavior in the code, go to line **81** and write the file path that you want.
+
+## Decryption
+#### Pre-conditions
+- You should have a valid text file with a proper private key, public key, and a proper encrypted .rsa file that has been encrypted with exactly the same language with the same order specified in the Encryption's pre-condition.
+- Your message file should be named message.rsa and be placed in the working folder.
+-- You could change this behavior in the code, go to line **93** and write the file path that you want.
+### Post-condition
+ - The output file will be a text file named message.dec placed in the working folder.
+-- You could change this behavior in the code, go to line **141** and write the file path that you want.
+  - a prompt message will appear to tell the user that the decrypted file has been crated.
+
+## To Compile and Run
+- This code has been written in JavaSE-15, it is suggested to compile it with that version to ensure minimal bugs and defects.
+- Run the code and follow the provided instructions inside the code to encrypt/decrypt.
