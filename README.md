@@ -8,7 +8,7 @@ To use it, please follow these next steps.
 ## Encryption
 #### Pre-conditions
  - You should have a valid text file with a proper encryption key, public key, and a proper text to encrypt.
---  The accepted text language is any character of [this string]()https://github.com/Kazero21/RSA-Encryption/blob/3dbeaa40acd2ed3f14194485f72baf71dc36d611/src/MainClass.java#L9.
+--  The accepted text language is any character of [this string](https://github.com/Kazero21/RSA-Encryption/blob/3dbeaa40acd2ed3f14194485f72baf71dc36d611/src/MainClass.java#L9).
  - In the message file, you need to write the encryption key (**e**) first, then the public key (**n**) second, followed by the message starting in the **next line**.
  - Your message file should be named message.txt and be placed in the working folder.
 -- You could change this behavior in the code, go to line [**41**](https://github.com/Kazero21/RSA-Encryption/blob/3dbeaa40acd2ed3f14194485f72baf71dc36d611/src/MainClass.java#L41) and write the file path that you want.
